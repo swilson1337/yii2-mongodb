@@ -287,7 +287,7 @@ class Collection extends Object
     public function update($condition, $newData, $options = [])
     {
         $writeResult = $this->database->createCommand()->update($this->name, $condition, $newData, $options);
-        return $writeResult->getModifiedCount() + $writeResult->getUpsertedCount();
+        return $writeResult->getMatchedCount() + $writeResult->getUpsertedCount();
     }
 
     /**
