@@ -12,6 +12,7 @@ use yii\base\ErrorHandler;
 use yii\base\InvalidConfigException;
 use yii\di\Instance;
 use yii\web\MultiFieldSession;
+use MongoDB\BSON\Binary;
 
 /**
  * Session extends [[\yii\web\Session]] by using MongoDB as session data storage.
@@ -117,14 +118,14 @@ class Session extends MultiFieldSession
 
         if (isset($this->readCallback)) {
             $doc = $collection->findOne($condition);
-            return $doc === null ? '' : $this->extractData($doc);
+            return $doc === null ? '' : (new Binary($this->extractData($doc), Binary::TYPE_GENERIC))->getData();
         }
 
         $doc = $collection->findOne(
             $condition,
             ['data' => 1, '_id' => 0]
         );
-        return isset($doc['data']) ? $doc['data'] : '';
+        return isset($doc['data']) ? (new Binary($doc['data'], Binary::TYPE_GENERIC))->getData() : '';
     }
 
     /**
@@ -141,7 +142,7 @@ class Session extends MultiFieldSession
         try {
             $this->db->getCollection($this->sessionCollection)->update(
                 ['id' => $id],
-                $this->composeFields($id, $data),
+                $this->composeFields($id, new Binary($data, Binary::TYPE_GENERIC)),
                 ['upsert' => true]
             );
         } catch (\Exception $e) {
