@@ -141,7 +141,7 @@ class Session extends MultiFieldSession
         try {
             $this->db->getCollection($this->sessionCollection)->update(
                 ['id' => $id],
-                $this->composeFields($id, utf8_encode(utf8_decode($data))),
+                $this->composeFields($id, utf8_encode($data)),
                 ['upsert' => true]
             );
         } catch (\Exception $e) {
