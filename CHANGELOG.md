@@ -1,8 +1,17 @@
 Yii Framework 2 mongodb extension Change Log
 ============================================
 
-2.1.4 under development
+2.1.5 under development
 -----------------------
+
+- Bug #227: Fixed `yii\mongodb\file\Collection::remove()` does not removes all file chunks in case `limit` is specified (klimov-paul)
+- Bug #228: Fixed `yii\mongodb\Command::aggregate()` does not support 'cursor' option (klimov-paul)
+- Enh #224: Provided support for 'migrate/fresh' command to truncate database and apply migrations again (klimov-paul)
+- Enh #225: Added `yii\mongodb\Migration::$compact` supporting `yii\console\controllers\BaseMigrateController::$compact` option (klimov-paul)
+
+
+2.1.4 June 23, 2017
+-------------------
 
 - Bug #187: Fixed exception is thrown on `yii\mongodb\rbac\MongoDbManager::invalidateCache()` invocation (jafaripur)
 - Bug #201: Fixed selection of master/slave server for read/write operations at `yii\mongodb\Command` (KhristenkoYura)
@@ -10,6 +19,7 @@ Yii Framework 2 mongodb extension Change Log
 - Bug #207: Fixed `yii\mongodb\validators\MongoDateValidator` corrupts date value, while validating existing `MongoDB\BSON\UTCDateTime` instance (klimov-paul)
 - Bug #210: Fixed `yii\mongodb\debug\MongoDbPanel` overrides explain action of `yii\debug\panels\DbPanel` (Liv1020, klimov-paul)
 - Bug #213: Made `MigrateController` compatible with Yii 2.0.12 (cebe)
+
 
 2.1.3 February 15, 2017
 -----------------------

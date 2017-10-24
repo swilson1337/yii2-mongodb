@@ -564,4 +564,27 @@ CODE;
             array_keys($rows)
         );
     }
+
+    /**
+     * @depends testUp
+     */
+    public function testRefreshMigration()
+    {
+        if (!is_callable(['yii\console\controllers\BaseMigrateController', 'actionFresh'])) {
+            $this->markTestSkipped('Method "yii\console\controllers\BaseMigrateController::actionFresh()" does not exist in this Yii framework version.');
+        }
+
+        $connection = $this->getConnection();
+
+        $collection = $connection->getCollection('hall_of_fame');
+        $collection->insert(['name' => 'Qiang Xue']);
+        $collection->insert(['name' => 'Alexander Makarov']);
+
+        $result = $this->runMigrateControllerAction('fresh');
+
+        $this->assertContains('Collection hall_of_fame dropped.', $result);
+        $this->assertContains('No new migrations found. Your system is up-to-date.', $result);
+
+        $this->assertEmpty($connection->getDatabase()->listCollections(['name' => $collection->name]));
+    }
 }
